@@ -83,3 +83,4 @@ class BaseModel(Base):
 
 
 from .course import Course
+from .user import User
