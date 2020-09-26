@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from fastapi_sqlalchemy import DBSessionMiddleware  # middleware helper
 
 from config import Config
+from models import db_middleware
 from models.utils import create_database_if_not_exists
 
 app = FastAPI()
-app.add_middleware(DBSessionMiddleware, db_url=Config.db_url)
+app.middleware('http')(db_middleware)
+
 create_database_if_not_exists()
 
 
