@@ -53,7 +53,7 @@ Base = declarative_base()
 class BaseModel(Base):
     __abstract__ = True
 
-    guid = Column(GUID, primary_key=True, default=uuid4)
+    guid = Column(GUID, primary_key=True, default=uuid4, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
