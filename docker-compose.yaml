@@ -6,9 +6,6 @@ services:
     volumes:
       - ./:/code
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: pi_academy
       DB_USER: admin
       DB_PASS: admin
     ports:
