@@ -80,3 +80,6 @@ class BaseModel(Base):
 
     def delete(self):
         db.session.delete(self)
+
+
+from .course import Course
