@@ -1,3 +1,6 @@
+import pytest
+
+from sqlalchemy.exc import IntegrityError
 from unittest import TestCase
 from models import Course, db
 
@@ -49,3 +52,11 @@ class TestCourse(TestCase):
         db.session.commit()
 
         assert Course.get_one(code=course_data[0]['code']) is None
+
+    def test_code_uniqueness(self):
+        Course.create_one(code=course_data[0]['code'], title='test', description='test')
+
+        with pytest.raises(IntegrityError):
+            db.session.commit()
+
+        db.session.rollback()
