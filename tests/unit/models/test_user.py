@@ -1,5 +1,8 @@
+import pytest
+
 from unittest import TestCase
 from models import db, User
+from sqlalchemy.exc import IntegrityError
 
 user_data = [
     {
@@ -25,9 +28,11 @@ class TestUser(TestCase):
         assert user is not None
         assert user.name == user_data[0]['name']
         assert user.username == user_data[0]['username']
-        assert user.password == user_data[0]['password']
         assert user.category == user_data[0]['category']
         assert user.avatar == None
+
+        with pytest.raises(Exception):
+            user.password
 
     def test_create__default_category(self):
         User.create_one(**user_data[1])
@@ -48,3 +53,15 @@ class TestUser(TestCase):
         db.session.commit()
 
         assert User.get_one(username='boofe') is None
+
+    def test_username_uniqueness(self):
+        User.create_one(name='Bar', username=user_data[0]['username'], password='bar')
+        with pytest.raises(IntegrityError):
+            db.session.commit()
+        
+        db.session.rollback()
+
+    def test_validate_password(self):
+        user = User.get_one(username = user_data[0]['username'])
+        assert user.validate_password(user_data[0]['password']) is True
+        assert user.validate_password('wrongpass') is False
