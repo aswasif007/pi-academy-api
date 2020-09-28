@@ -1,5 +1,5 @@
 from unittest import TestCase
-
+from uuid import uuid4
 from datetime import datetime, timedelta
 from models import db, Enrollment
 from tests.utils import create_mock_user, create_mock_course
@@ -15,12 +15,13 @@ enrollment_data = [
 class TestEnrollment(TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.enrollment_guid = uuid4()
         cls.users = [create_mock_user(), create_mock_user()]
         cls.courses = [create_mock_course(), create_mock_course()]
         return super().setUpClass()
 
     def test_create(self):
-        enrollment = Enrollment.create_one(**enrollment_data[0], course=self.courses[0])
+        enrollment = Enrollment.create_one(**enrollment_data[0], guid=self.enrollment_guid, course=self.courses[0])
         db.session.commit()
 
         enrollment = Enrollment.get_one(guid=enrollment.guid)
@@ -40,7 +41,7 @@ class TestEnrollment(TestCase):
         assert Enrollment.get_one(guid=enrollment.guid).status == 'closed'
 
     def test_delete(self):
-        enrollment = Enrollment.get_one()
+        enrollment = Enrollment.get_one(guid=self.enrollment_guid)
         enrollment.delete()
         db.session.commit()
 

@@ -63,7 +63,7 @@ class BaseModel(Base):
 
     @classmethod
     def get_one(cls, **kwargs):
-        return db.session.query(cls).filter_by(**kwargs).one_or_none()
+        return db.session.query(cls).filter_by(**kwargs).first()
 
     @classmethod
     def create_one(cls, **kwargs):
@@ -85,3 +85,4 @@ class BaseModel(Base):
 from .course import Course
 from .user import User
 from .enrollment import Enrollment, EnrollmentToUserAssociation
+from .discussion import Discussion
