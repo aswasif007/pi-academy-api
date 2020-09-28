@@ -2,8 +2,10 @@ import enum
 import bcrypt
 
 from sqlalchemy import Column, VARCHAR, String
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from . import BaseModel
+from .enrollment import EnrollmentToUserAssociation
+
 
 categories = ['student', 'professor', 'admin', 'curator']
 
@@ -14,6 +16,8 @@ class User(BaseModel):
     password_hash = Column('password', String, nullable=False)
     avatar = Column(String, nullable=True)
     category = Column(VARCHAR(64), nullable=False, default=categories[0])
+
+    enrollments = relationship('Enrollment', secondary=EnrollmentToUserAssociation, back_populates='people')
 
     @validates('category')
     def category_validator(self, key, value):

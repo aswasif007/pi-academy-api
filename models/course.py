@@ -1,4 +1,5 @@
 from sqlalchemy import Column, VARCHAR, String, ARRAY
+from sqlalchemy.orm import relationship
 from . import BaseModel
 
 
@@ -9,3 +10,5 @@ class Course(BaseModel):
     outlines = Column(ARRAY(String), default=[])
     tags = Column(ARRAY(String), default=[])
     takeaways = Column(ARRAY(String), default=[])
+
+    enrollments = relationship('Enrollment', back_populates='course')
