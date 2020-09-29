@@ -87,3 +87,4 @@ from .user import User
 from .enrollment import Enrollment, EnrollmentToUserAssociation
 from .discussion import Discussion
 from .event import Event
+from .user_profile import UserProfile
