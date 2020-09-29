@@ -23,6 +23,7 @@ class Enrollment(BaseModel):
 
     course = relationship('Course', back_populates='enrollments')
     people = relationship('User', secondary=EnrollmentToUserAssociation, back_populates='enrollments')
+    events = relationship('Event', back_populates='enrollment')
 
     @validates('status')
     def status_validator(self, key, value):

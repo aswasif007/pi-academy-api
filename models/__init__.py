@@ -86,3 +86,4 @@ from .course import Course
 from .user import User
 from .enrollment import Enrollment, EnrollmentToUserAssociation
 from .discussion import Discussion
+from .event import Event
