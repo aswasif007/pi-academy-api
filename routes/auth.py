@@ -19,7 +19,7 @@ class TokenOut(BaseModel):
     token_type: str
 
 
-@router.post('/login')
+@router.post('/login', response_model=TokenOut)
 def login(response: Response, form_data: CredentialsIn) -> TokenOut:
     user = auth.authenticate_user(form_data.username, form_data.password)
     if not user:
@@ -37,12 +37,12 @@ def login(response: Response, form_data: CredentialsIn) -> TokenOut:
     return TokenOut(access_token=token, token_type='bearer')
 
 
-@router.post('/logout')
+@router.post('/logout', response_model=dict)
 def logout(response: Response):
     response.delete_cookie('Authorization')
     return {}
 
 
-@router.get('/current-user')
+@router.get('/current-user', response_model=dict)
 def get_current_user(current_user: User = Depends(auth.get_current_user)):
     return current_user.to_dict()
