@@ -1,14 +1,16 @@
 from datetime import datetime, timedelta
 from faker import Faker
 from models import db, User, Course, Enrollment
+from fastapi.testclient import TestClient
+from main import app
 
 
 def create_mock_user(**kwargs):
     fake = Faker()
     user = User.create_one(
-        name=fake.name(),
-        username=fake.user_name(),
-        password=fake.password(),
+        name=kwargs.get('name', fake.name()),
+        username=kwargs.get('username', fake.user_name()),
+        password=kwargs.get('password', fake.password()),
         avatar=fake.uri(),
     )
     db.session.commit()
@@ -39,3 +41,6 @@ def create_mock_enrollment(**kwargs):
     )
     db.session.commit()
     return enrollment
+
+
+test_client = TestClient(app)

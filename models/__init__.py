@@ -81,6 +81,13 @@ class BaseModel(Base):
     def delete(self):
         db.session.delete(self)
 
+    def to_dict(self):
+        return {
+            'guid': self.guid,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+        }
+
 
 from .course import Course
 from .user import User

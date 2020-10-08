@@ -35,3 +35,13 @@ class User(BaseModel):
 
     def validate_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
+
+    def to_dict(self):
+        obj = super().to_dict()
+        obj.update({
+            'name': self.name,
+            'username': self.username,
+            'avatar': self.avatar,
+            'category': self.category,
+        })
+        return obj
