@@ -12,3 +12,15 @@ class Course(BaseModel):
     takeaways = Column(ARRAY(String), default=[])
 
     enrollments = relationship('Enrollment', back_populates='course')
+
+    def to_dict(self):
+        obj = super().to_dict()
+        obj.update({
+            'code': self.code,
+            'title': self.title,
+            'description': self.description,
+            'outlines': self.outlines,
+            'tags': self.tags,
+            'takeaways': self.takeaways,
+        })
+        return obj

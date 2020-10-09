@@ -45,11 +45,16 @@ def create_access_token(user: User):
 
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
+    payload = is_authorized(token)
+    user = User.get_one(username=payload['sub'])
+    if user:
+        return user
+
+    raise HTTPException(status_code=401, detail='Unauthorized.')
+
+
+def is_authorized(token: str = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, Config.secret, algorithms=['HS256'])
-        user = User.get_one(username=payload['sub'])
-        if user:
-            return user
-        raise
+        return jwt.decode(token, Config.secret, algorithms=['HS256'])
     except Exception:
-        raise HTTPException(status_code=401, detail='Not logged in.')
+        raise HTTPException(status_code=401, detail='Unauthorized.')

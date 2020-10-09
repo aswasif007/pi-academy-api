@@ -66,6 +66,10 @@ class BaseModel(Base):
         return db.session.query(cls).filter_by(**kwargs).first()
 
     @classmethod
+    def get_all(cls, offset=0, limit=10):
+        return db.session.query(cls).offset(offset).limit(limit)
+
+    @classmethod
     def create_one(cls, **kwargs):
         obj = cls(**kwargs)
         db.session.add(obj)
@@ -87,6 +91,10 @@ class BaseModel(Base):
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }
+
+
+class EntryDoesNotExist(Exception):
+    pass
 
 
 from .course import Course
