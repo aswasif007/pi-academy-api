@@ -10,13 +10,13 @@ statuses = ['open', 'closed']
 EnrollmentToUserAssociation = Table(
     'enrollment_to_user_associations',
     Base.metadata,
-    Column('user_guid', GUID, ForeignKey('users.guid')),
-    Column('enrollment_guid', GUID, ForeignKey('enrollments.guid'))
+    Column('user_guid', GUID, ForeignKey('users.guid', ondelete='CASCADE')),
+    Column('enrollment_guid', GUID, ForeignKey('enrollments.guid', ondelete='CASCADE'))
 )
 
 
 class Enrollment(BaseModel):
-    course_guid = Column(GUID, ForeignKey('courses.guid'), nullable=False)
+    course_guid = Column(GUID, ForeignKey('courses.guid', ondelete='CASCADE'), nullable=False)
     status = Column(VARCHAR(32), nullable=False, default=statuses[0])
     start_date = Column(DateTime, default=datetime.utcnow)
     end_date = Column(DateTime, default=lambda: datetime.utcnow + timedelta(days=90))

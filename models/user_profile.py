@@ -7,7 +7,7 @@ from . import BaseModel
 class UserProfile(BaseModel):
     __tablename__ = 'user_profiles'
 
-    guid = Column(GUID, ForeignKey('users.guid'), primary_key=True)
+    guid = Column(GUID, ForeignKey('users.guid', ondelete='CASCADE'), primary_key=True)
     bio = Column(String, default='')
     email = Column(VARCHAR(64), default='')
     interests = Column(ARRAY(String), default=[])

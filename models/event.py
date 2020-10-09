@@ -14,8 +14,8 @@ class Event(BaseModel):
     type = Column(VARCHAR(32), default=eventTypes[0])
     status = Column(VARCHAR(32), default=statuses[0])
     schedule = Column(DateTime, default=None)
-    enrollment_guid = Column(GUID, ForeignKey('enrollments.guid'), default=None)
-    user_guid = Column(GUID, ForeignKey('users.guid'), default=None)
+    enrollment_guid = Column(GUID, ForeignKey('enrollments.guid', ondelete='SET NULL'), default=None)
+    user_guid = Column(GUID, ForeignKey('users.guid', ondelete='SET NULL'), default=None)
 
     enrollment = relationship('Enrollment', back_populates='events')
     user = relationship('User', back_populates='events')
