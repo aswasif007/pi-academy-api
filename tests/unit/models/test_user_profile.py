@@ -1,6 +1,6 @@
 from unittest import TestCase
 from models import db, UserProfile
-from tests.utils import create_mock_user
+from tests.utils import create_mock_user, teardown_data
 
 profile_data = [
     {
@@ -42,3 +42,8 @@ class TestUserProfile(TestCase):
         db.session.commit()
 
         assert UserProfile.get_one(guid=self.users[0].guid) is None
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_data()
+        return super().tearDownClass()

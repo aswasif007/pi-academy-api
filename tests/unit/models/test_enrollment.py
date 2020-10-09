@@ -2,7 +2,7 @@ from unittest import TestCase
 from uuid import uuid4
 from datetime import datetime, timedelta
 from models import db, Enrollment
-from tests.utils import create_mock_user, create_mock_course
+from tests.utils import create_mock_user, create_mock_course, teardown_data
 
 
 enrollment_data = [
@@ -69,3 +69,8 @@ class TestEnrollment(TestCase):
         db.session.commit()
 
         assert enrollment.course == self.courses[1]
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_data()
+        return super().tearDownClass()

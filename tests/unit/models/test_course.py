@@ -3,6 +3,7 @@ import pytest
 from sqlalchemy.exc import IntegrityError
 from unittest import TestCase
 from models import Course, db
+from tests.utils import teardown_data
 
 course_data = [
     {
@@ -60,3 +61,8 @@ class TestCourse(TestCase):
             db.session.commit()
 
         db.session.rollback()
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_data()
+        return super().tearDownClass()

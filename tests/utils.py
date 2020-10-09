@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from faker import Faker
-from models import db, User, Course, Enrollment
+from models import db, User, Course, Enrollment, Discussion, Event, UserProfile
 from fastapi.testclient import TestClient
 from main import app
 
@@ -42,5 +42,11 @@ def create_mock_enrollment(**kwargs):
     db.session.commit()
     return enrollment
 
+
+def teardown_data():
+    for model in [User, Course, Enrollment, Event, Discussion, UserProfile]:
+        db.session.query(model).delete()
+
+    db.session.commit()
 
 test_client = TestClient(app)

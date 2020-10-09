@@ -3,6 +3,7 @@ import pytest
 from unittest import TestCase
 from models import db, User
 from sqlalchemy.exc import IntegrityError
+from tests.utils import teardown_data
 
 user_data = [
     {
@@ -65,3 +66,8 @@ class TestUser(TestCase):
         user = User.get_one(username = user_data[0]['username'])
         assert user.validate_password(user_data[0]['password']) is True
         assert user.validate_password('wrongpass') is False
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_data()
+        return super().tearDownClass()

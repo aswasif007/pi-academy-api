@@ -1,7 +1,7 @@
 from uuid import uuid4
 from datetime import datetime
 from unittest import TestCase
-from tests.utils import create_mock_enrollment, create_mock_user
+from tests.utils import create_mock_enrollment, create_mock_user, teardown_data
 from models import db, Event
 
 event_data = [
@@ -48,3 +48,8 @@ class TestEvent(TestCase):
         db.session.commit()
 
         assert Event.get_one(guid=self.event_guid) is None
+
+    @classmethod
+    def tearDownClass(cls):
+        teardown_data()
+        return super().tearDownClass()
