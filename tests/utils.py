@@ -49,4 +49,6 @@ def teardown_data():
 
     db.session.commit()
 
-test_client = TestClient(app)
+
+def get_test_client():
+    return TestClient(app)
