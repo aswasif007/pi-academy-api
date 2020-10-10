@@ -6,19 +6,19 @@ def get(guid):
     if not obj:
         raise EntryDoesNotExist
 
-    return obj.to_dict()
+    return obj
 
 
 def get_all():
     objs = Course.get_all()
-    return [obj.to_dict() for obj in objs]
+    return [obj for obj in objs]
 
 
 def create(data):
     course = Course.create_one(**data)
     db.session.commit()
 
-    return course.to_dict()
+    return course
 
 
 def delete(guid):
@@ -38,4 +38,4 @@ def update(guid, data):
     course.update(**data)
     db.session.commit()
 
-    return course.to_dict()
+    return course
