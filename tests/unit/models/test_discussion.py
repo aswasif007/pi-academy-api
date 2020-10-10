@@ -1,6 +1,6 @@
 from unittest import TestCase
 from uuid import uuid4
-from tests.utils import create_mock_user, create_mock_enrollment, teardown_data
+from tests.utils import create_mock_user, create_mock_enrollment, create_mock_discussion, teardown_data
 from models import db, Discussion
 
 
@@ -46,6 +46,13 @@ class TestDiscussion(TestCase):
         Discussion.get_one(guid=self.discussion_guid).delete()
         db.session.commit()
         assert Discussion.get_one(guid=self.discussion_guid) is None
+
+    def test_create__post_and_comments(self):
+        post = create_mock_discussion()
+        comments = [create_mock_discussion(post=post), create_mock_discussion(post=post)]
+
+        assert post.comments == comments
+        assert all([com.post == post for com in comments]) is True
 
     @classmethod
     def tearDownClass(cls):
