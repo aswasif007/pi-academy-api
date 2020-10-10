@@ -55,6 +55,16 @@ def create_mock_discussion(**kwargs):
     return discussion
 
 
+def create_mock_discussion_thread(**kwargs):
+    post = create_mock_discussion(**kwargs)
+    comments = kwargs.pop('comments', [create_mock_discussion(), create_mock_discussion()])
+    for comment in comments:
+        comment.post = post
+    
+    db.session.commit()
+    return post
+
+
 def teardown_data():
     for model in [User, Course, Enrollment, Event, Discussion, UserProfile]:
         db.session.query(model).delete()

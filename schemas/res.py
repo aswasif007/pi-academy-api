@@ -58,3 +58,30 @@ class UserRes(ResourceRes):
             category=obj.category,
             **ResourceRes.from_obj(obj).dict()
         )
+
+
+
+class DiscussionRes(ResourceRes):
+    body: str
+    author: UserRes
+
+    @staticmethod
+    def from_obj(obj):
+        return DiscussionRes(
+            body=obj.body,
+            author=UserRes.from_obj(obj.author),
+            **ResourceRes.from_obj(obj).dict()
+        )
+
+
+class ThreadRes(ResourceRes):
+    post: DiscussionRes
+    comments: List[DiscussionRes]
+
+    @staticmethod
+    def from_obj(obj):
+        return ThreadRes(
+            post=DiscussionRes.from_obj(obj),
+            comments=[DiscussionRes.from_obj(comm) for comm in obj.comments],
+            **ResourceRes.from_obj(obj).dict()
+        )

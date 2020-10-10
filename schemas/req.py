@@ -20,3 +20,7 @@ class CourseUpdate(CourseCreate):
     code: Optional[str]
     title: Optional[str]
     description: Optional[str]
+
+
+class DiscussionCreate(BaseModel):
+    body: str
