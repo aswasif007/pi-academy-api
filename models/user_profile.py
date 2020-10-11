@@ -12,4 +12,4 @@ class UserProfile(BaseModel):
     email = Column(VARCHAR(64), default='')
     interests = Column(ARRAY(String), default=[])
 
-    user = relationship('User', uselist=False)
+    user = relationship('User', uselist=False, back_populates='profile')

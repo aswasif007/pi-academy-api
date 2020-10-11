@@ -3,7 +3,7 @@ import pytest
 from unittest import TestCase
 from models import db, User
 from sqlalchemy.exc import IntegrityError
-from tests.utils import teardown_data
+from tests.utils import teardown_data, create_mock_user_profile
 
 user_data = [
     {
@@ -66,6 +66,10 @@ class TestUser(TestCase):
         user = User.get_one(username = user_data[0]['username'])
         assert user.validate_password(user_data[0]['password']) is True
         assert user.validate_password('wrongpass') is False
+
+    def test_relationship__profile(self):
+        profile = create_mock_user_profile()
+        assert User.get_one(guid=profile.guid).profile == profile
 
     @classmethod
     def tearDownClass(cls):

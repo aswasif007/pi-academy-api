@@ -19,6 +19,7 @@ class User(BaseModel):
 
     enrollments = relationship('Enrollment', secondary=EnrollmentToUserAssociation, back_populates='people')
     events = relationship('Event', back_populates='user')
+    profile = relationship('UserProfile', uselist=False, back_populates='user')
 
     @validates('category')
     def category_validator(self, key, value):
