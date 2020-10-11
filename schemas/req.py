@@ -22,5 +22,11 @@ class CourseUpdate(CourseCreate):
     description: Optional[str]
 
 
+class UserUpdate(BaseModel):
+    bio: Optional[str]
+    email: Optional[str]
+    interests: Optional[List[str]]
+
+
 class DiscussionCreate(BaseModel):
     body: str

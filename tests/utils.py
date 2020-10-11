@@ -65,6 +65,18 @@ def create_mock_discussion_thread(**kwargs):
     return post
 
 
+def create_mock_user_profile(**kwargs):
+    fake = Faker()
+    profile = UserProfile.create_one(
+        user=kwargs.get('user', create_mock_user()),
+        bio=fake.sentences(),
+        email=fake.email(),
+        interests=[fake.word(), fake.word()],
+    )
+    db.session.commit()
+    return profile
+
+
 def teardown_data():
     for model in [User, Course, Enrollment, Event, Discussion, UserProfile]:
         db.session.query(model).delete()

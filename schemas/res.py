@@ -85,3 +85,18 @@ class ThreadRes(ResourceRes):
             comments=[DiscussionRes.from_obj(comm) for comm in obj.comments],
             **ResourceRes.from_obj(obj).dict()
         )
+
+
+class ProfileRes(ResourceRes):
+    bio: str
+    email: str
+    interests: List[str]
+
+    @staticmethod
+    def from_obj(obj):
+        return ProfileRes(
+            bio=obj.bio,
+            email=obj.email,
+            interests=obj.interests,
+            **ResourceRes.from_obj(obj).dict()
+        )
