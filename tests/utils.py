@@ -11,6 +11,7 @@ def create_mock_user(**kwargs):
         name=kwargs.get('name', fake.name()),
         username=kwargs.get('username', fake.user_name()),
         password=kwargs.get('password', fake.password()),
+        category=kwargs.get('category', 'student'),
         avatar=fake.uri(),
     )
     db.session.commit()
@@ -32,13 +33,16 @@ def create_mock_course(**kwargs):
 
 
 def create_mock_enrollment(**kwargs):
+    people = kwargs.pop('people', [create_mock_user(), create_mock_user()])
     enrollment = Enrollment.create_one(
         course=create_mock_course(),
         start_date=datetime.utcnow(),
         end_date=datetime.utcnow() + timedelta(days=60),
-        people=[create_mock_user(), create_mock_user()],
         status='open',
     )
+    for user in people:
+        enrollment.people.append(user)
+
     db.session.commit()
     return enrollment
 

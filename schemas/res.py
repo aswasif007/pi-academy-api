@@ -100,3 +100,35 @@ class ProfileRes(ResourceRes):
             interests=obj.interests,
             **ResourceRes.from_obj(obj).dict()
         )
+
+
+class EnrollmentRes(ResourceRes):
+    code: str
+    title: str
+
+    @staticmethod
+    def from_obj(obj):
+        return EnrollmentRes(
+            code=obj.course.code,
+            title=obj.course.title,
+            **ResourceRes.from_obj(obj).dict()
+        )
+
+
+class EnrollmentDetailsRes(ResourceRes):
+    status: str
+    instructors: List[UserRes]
+    members: List[UserRes]
+    course: CourseRes
+
+    @staticmethod
+    def from_obj(obj):
+        instructors = [user for user in obj.people if user.category == 'professor']
+        members = [user for user in obj.people if user.category == 'student']
+        return EnrollmentDetailsRes(
+            status=obj.status,
+            instructors=[UserRes.from_obj(user) for user in instructors],
+            members=[UserRes.from_obj(user) for user in members],
+            course=CourseRes.from_obj(obj.course),
+            **ResourceRes.from_obj(obj).dict()
+        )

@@ -14,6 +14,11 @@ def get_general_posts():
     return [obj for obj in objs]
 
 
+def get_enrollment_posts(enrollment_guid):
+    objs = db.session.query(Discussion).filter(Discussion.enrollment_guid == enrollment_guid, Discussion.post_guid.is_(None))
+    return [obj for obj in objs]
+
+
 def create(data):
     post_guid = data.pop('post_guid', None)
     data['post'] = post_guid and get(post_guid)
