@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from models import db_middleware
-from routes import auth, courses, discussions, profiles, enrollments
+from routes import auth, courses, discussions, profiles, enrollments, events
 from api import auth as authAPI
 
 app = FastAPI()
@@ -18,3 +18,4 @@ app.include_router(courses, prefix='/courses', dependencies=[authorization])
 app.include_router(discussions, prefix='/discussions', dependencies=[authorization])
 app.include_router(profiles, prefix='/profiles', dependencies=[authorization])
 app.include_router(enrollments, prefix='/enrollments', dependencies=[authorization])
+app.include_router(events, prefix='/events', dependencies=[authorization])

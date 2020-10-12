@@ -132,3 +132,20 @@ class EnrollmentDetailsRes(ResourceRes):
             course=CourseRes.from_obj(obj.course),
             **ResourceRes.from_obj(obj).dict()
         )
+
+
+class EventRes(ResourceRes):
+    subtitle: str
+    title: str
+    type: str
+    schedule: datetime
+
+    @staticmethod
+    def from_obj(obj):
+        return EventRes(
+            subtitle=obj.subtitle,
+            title=obj.title,
+            type=obj.type,
+            schedule=obj.schedule,
+            **ResourceRes.from_obj(obj).dict(),
+        )

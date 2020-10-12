@@ -81,6 +81,21 @@ def create_mock_user_profile(**kwargs):
     return profile
 
 
+def create_mock_event(**kwargs):
+    fake = Faker()
+    event = Event.create_one(
+        subtitle=kwargs.get('subtitle', fake.sentence()),
+        title=kwargs.get('title', fake.sentence()),
+        type=kwargs.get('type', 'notice'),
+        status=kwargs.get('status', 'active'),
+        schedule=kwargs.get('schedule', datetime.utcnow()),
+        user=kwargs.get('user'),
+        enrollment=kwargs.get('enrollment'),
+    )
+    db.session.commit()
+    return event
+
+
 def teardown_data():
     for model in [User, Course, Enrollment, Event, Discussion, UserProfile]:
         db.session.query(model).delete()

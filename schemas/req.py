@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
+from datetime import datetime
 
 
 class Credentials(BaseModel):
@@ -30,3 +31,11 @@ class UserUpdate(BaseModel):
 
 class DiscussionCreate(BaseModel):
     body: str
+
+
+class EventCreate(BaseModel):
+    subtitle: Optional[str]
+    title: str
+    type: Optional[str] = 'notice'
+    schedule: Optional[datetime]
+    enrollment_guid: Optional[str]
