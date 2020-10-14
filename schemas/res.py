@@ -1,17 +1,19 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import List, Optional
+from models.user import categories as user_cateogies
+from models.event import event_types
 
 
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    access_token: str = Field(..., title='Signed JWT. Must be in the request cookie for authorization.')
+    token_type: str = Field(..., title='Token type.', description='Ex: Bearer.')
 
 
 class ResourceRes(BaseModel):
-    guid: str
-    created_at: datetime
-    updated_at: datetime
+    guid: str = Field(..., title='Globally unique identifier of the object.')
+    created_at: datetime = Field(..., title='Object creation timestamp.')
+    updated_at: datetime = Field(..., title='Object last modification timestamp.')
 
     @staticmethod
     def from_obj(obj):
@@ -23,12 +25,12 @@ class ResourceRes(BaseModel):
 
 
 class CourseRes(ResourceRes):
-    code: str
-    title: str
-    description: str
-    outlines: List[str]
-    tags: List[str]
-    takeaways: List[str]
+    code: str = Field(..., title='Unique short-hand of the course.', description='Ex: ML-101')
+    title: str = Field(..., title='Title of the course.', description='Ex: Introduction to Machine Learning')
+    description: str = Field(..., title='Detailed course description.')
+    outlines: List[str] = Field(..., title='Workflow of the course.')
+    tags: List[str] = Field(..., title='Tags, useful in recommendation.')
+    takeaways: List[str] = Field(..., title='Knowledge offered by the course.')
 
     @staticmethod
     def from_obj(obj):
@@ -44,10 +46,10 @@ class CourseRes(ResourceRes):
 
 
 class UserRes(ResourceRes):
-    name: str
-    avatar: Optional[str] = None
+    name: str = Field(..., title='Full name of the user')
+    avatar: Optional[str] = Field(None, title='User\'s avatar url.')
     username: str
-    category: str
+    category: str = Field(..., title='Category of the user', description='One of {}'.format(' '.join(['`%s`' % v for v in user_cateogies])))
 
     @staticmethod
     def from_obj(obj):
@@ -62,8 +64,8 @@ class UserRes(ResourceRes):
 
 
 class DiscussionRes(ResourceRes):
-    body: str
-    author: UserRes
+    body: str = Field(..., title='Text content.')
+    author: UserRes = Field(..., title='Author of the text content.')
 
     @staticmethod
     def from_obj(obj):
@@ -75,8 +77,8 @@ class DiscussionRes(ResourceRes):
 
 
 class ThreadRes(ResourceRes):
-    post: DiscussionRes
-    comments: List[DiscussionRes]
+    post: DiscussionRes = Field(..., title='The first discussion of the conversation.')
+    comments: List[DiscussionRes] = Field(..., title='Subsequent discussions of the conversation.')
 
     @staticmethod
     def from_obj(obj):
@@ -88,9 +90,9 @@ class ThreadRes(ResourceRes):
 
 
 class ProfileRes(ResourceRes):
-    bio: str
-    email: str
-    interests: List[str]
+    bio: str = Field(..., title='Short intro of the user.')
+    email: str = Field(..., title='Email address')
+    interests: List[str] = Field(..., title='Topics that attracts the user.')
 
     @staticmethod
     def from_obj(obj):
@@ -103,8 +105,8 @@ class ProfileRes(ResourceRes):
 
 
 class EnrollmentRes(ResourceRes):
-    code: str
-    title: str
+    code: str = Field(..., title='Enrollment\'s course-code')
+    title: str = Field(..., title='Enrollment\'s course-title')
 
     @staticmethod
     def from_obj(obj):
@@ -116,10 +118,10 @@ class EnrollmentRes(ResourceRes):
 
 
 class EnrollmentDetailsRes(ResourceRes):
-    status: str
-    instructors: List[UserRes]
-    members: List[UserRes]
-    course: CourseRes
+    status: str = Field(..., title='Current status of the enrollment.')
+    instructors: List[UserRes] = Field(..., title='List of professors instructing this course.')
+    members: List[UserRes] = Field(..., title='List of students participating in this course.')
+    course: CourseRes = Field(..., title='The course')
 
     @staticmethod
     def from_obj(obj):
@@ -135,10 +137,10 @@ class EnrollmentDetailsRes(ResourceRes):
 
 
 class EventRes(ResourceRes):
-    subtitle: str
-    title: str
-    type: str
-    schedule: datetime
+    title: str = Field(..., title='Title of the event.')
+    subtitle: str = Field(..., title='Extra bit of info apart from the title.')
+    type: str = Field(..., title='Type of the event', description='One of {}'.format(' '.join(['`%s`' % v for v in event_types])))
+    schedule: datetime = Field(..., title='Event schedule.')
 
     @staticmethod
     def from_obj(obj):

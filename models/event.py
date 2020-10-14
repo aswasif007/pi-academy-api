@@ -4,14 +4,14 @@ from fastapi_utils.guid_type import GUID
 from sqlalchemy import Column, String, DateTime, ForeignKey, VARCHAR
 from sqlalchemy.orm import relationship, validates
 
-eventTypes = ['notice', 'test', 'test_result']
+event_types = ['notice', 'test', 'test_result']
 statuses = ['active', 'expired']
 
 
 class Event(BaseModel):
     subtitle = Column(String, default=None)
     title = Column(String, nullable=False)
-    type = Column(VARCHAR(32), default=eventTypes[0])
+    type = Column(VARCHAR(32), default=event_types[0])
     status = Column(VARCHAR(32), default=statuses[0])
     schedule = Column(DateTime, default=None)
     enrollment_guid = Column(GUID, ForeignKey('enrollments.guid', ondelete='SET NULL'), default=None)
@@ -22,7 +22,7 @@ class Event(BaseModel):
 
     @validates('type')
     def type_validator(self, key, value):
-        assert value in eventTypes
+        assert value in event_types
         return value
 
     @validates('status')
